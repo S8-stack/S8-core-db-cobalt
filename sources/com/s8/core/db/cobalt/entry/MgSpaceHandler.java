@@ -7,10 +7,10 @@ import java.util.List;
 import com.s8.api.flow.S8User;
 import com.s8.api.flow.space.requests.AccessSpaceS8Request;
 import com.s8.api.flow.space.requests.ExposeSpaceS8Request;
-import com.s8.core.arch.magnesium.handlers.h3.H3MgHandler;
-import com.s8.core.arch.magnesium.handlers.h3.H3MgIOModule;
 import com.s8.core.arch.silicon.SiliconChainCallback;
 import com.s8.core.arch.silicon.SiliconEngine;
+import com.s8.core.arch.titanium.handlers.h3.H3MgHandler;
+import com.s8.core.arch.titanium.handlers.h3.H3MgIOModule;
 import com.s8.core.bohr.lithium.branches.LiBranch;
 import com.s8.core.db.cobalt.store.SpaceMgStore;
 

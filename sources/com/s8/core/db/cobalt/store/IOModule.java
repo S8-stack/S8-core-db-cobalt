@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 
-import com.s8.core.arch.magnesium.handlers.h3.H3MgIOModule;
+import com.s8.core.arch.titanium.handlers.h3.H3MgIOModule;
 import com.s8.core.io.json.JSON_Lexicon;
 import com.s8.core.io.json.parsing.JSON_ParsingException;
 import com.s8.core.io.json.types.JSON_CompilingException;

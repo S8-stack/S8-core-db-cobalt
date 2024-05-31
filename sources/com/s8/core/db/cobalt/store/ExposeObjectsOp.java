@@ -5,10 +5,10 @@ import java.io.IOException;
 import com.s8.api.flow.S8User;
 import com.s8.api.flow.space.requests.ExposeSpaceS8Request;
 import com.s8.api.flow.space.requests.ExposeSpaceS8Request.Status;
-import com.s8.core.arch.magnesium.databases.RequestDbMgOperation;
-import com.s8.core.arch.magnesium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.core.arch.silicon.SiliconChainCallback;
 import com.s8.core.arch.silicon.async.MthProfile;
+import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
+import com.s8.core.arch.titanium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.core.db.cobalt.entry.MgSpaceHandler;
 
 /**

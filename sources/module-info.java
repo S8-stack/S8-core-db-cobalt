@@ -13,7 +13,7 @@ module com.s8.core.db.cobalt {
 	
 	
 	requires transitive com.s8.core.bohr.lithium;
-	requires transitive com.s8.core.arch.magnesium;
+	requires transitive com.s8.core.arch.titanium;
 	requires transitive com.s8.core.io.xml;
 	
 }
