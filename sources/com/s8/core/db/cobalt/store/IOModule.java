@@ -6,12 +6,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 
+import com.s8.base.io.json.JSON_Lexicon;
+import com.s8.base.io.json.parsing.JSON_ParsingException;
+import com.s8.base.io.json.types.JSON_CompilingException;
+import com.s8.base.io.json.utilities.JOOS_BufferedFileReader;
+import com.s8.base.io.json.utilities.JOOS_BufferedFileWriter;
 import com.s8.core.arch.titanium.handlers.h3.H3MgIOModule;
-import com.s8.core.io.json.JSON_Lexicon;
-import com.s8.core.io.json.parsing.JSON_ParsingException;
-import com.s8.core.io.json.types.JSON_CompilingException;
-import com.s8.core.io.json.utilities.JOOS_BufferedFileReader;
-import com.s8.core.io.json.utilities.JOOS_BufferedFileWriter;
 
 public class IOModule implements H3MgIOModule<SpaceMgStore> {
 
