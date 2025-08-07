@@ -18,7 +18,7 @@ public class CoConfiguration {
 
 	public String rootFolderPathname;
 
-	@XML_SetElement(tag = "path")
+	@XML_SetElement(name = "path")
 	public void setRootFolderPathname(String pathname) {
 		this.rootFolderPathname = pathname;
 	}
