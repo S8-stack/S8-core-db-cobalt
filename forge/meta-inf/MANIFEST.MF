@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Class-Path: ../../S8-bohr-protocol/classes/S8-bohr-protocol.jar ../../S8
+ -base-io-XML/classes/S8-base-io-XML.jar ../../S8-core-arch-silicon/class
+ es/S8-core-arch-silicon.jar ../../S8-bohr-io-lithium/classes/S8-bohr-io-
+ lithium.jar ../../S8-base-io-bytes/classes/S8-base-io-bytes.jar ../../S8
+ -base-io-JSON/classes/S8-base-io-JSON.jar ../../S8-meta/classes/S8-meta.
+ jar ../../S8-core-arch-titanium/classes/S8-core-arch-titanium.jar ../../
+ S8-api/classes/S8-api.jar
