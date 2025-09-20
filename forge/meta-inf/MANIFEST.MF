@@ -1,4 +1,5 @@
 Manifest-Version: 1.0
+Build-Mode: prod
 Class-Path: ../../S8-bohr-protocol/classes/S8-bohr-protocol.jar ../../S8
  -base-io-XML/classes/S8-base-io-XML.jar ../../S8-core-arch-silicon/class
  es/S8-core-arch-silicon.jar ../../S8-bohr-io-lithium/classes/S8-bohr-io-
