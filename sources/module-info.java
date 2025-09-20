@@ -2,9 +2,11 @@
  * 
  */
 
-import com.s8.meta.modular.S8Module;
+import com.s8.core.db.cobalt.S8CoreDbCobalt;
+import com.s8.meta.modular.S8ModuleDescriptor;
 
-@S8Module(target = "S8-core-db-cobalt")
+
+@S8ModuleDescriptor(def = S8CoreDbCobalt.class)
 module com.s8.core.db.cobalt {
 	
 	exports com.s8.core.db.cobalt;
