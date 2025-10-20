@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.api.flow.S8User;
-import com.s8.api.flow.space.requests.AccessSpaceS8Request;
-import com.s8.api.flow.space.requests.ExposeSpaceS8Request;
+import com.s8.api.flow.space.AccessSpaceS8Request;
+import com.s8.api.flow.space.ExposeSpaceS8Request;
 import com.s8.bohr.io.lithium.branches.LiBranch;
 import com.s8.core.arch.silicon.SiliconChainCallback;
 import com.s8.core.arch.silicon.SiliconEngine;

@@ -3,8 +3,8 @@ package com.s8.core.db.cobalt.store;
 import java.io.IOException;
 
 import com.s8.api.flow.S8User;
-import com.s8.api.flow.space.requests.AccessSpaceS8Request;
-import com.s8.api.flow.space.requests.AccessSpaceS8Request.Status;
+import com.s8.api.flow.space.AccessSpaceS8Request;
+import com.s8.api.flow.space.AccessSpaceS8Request.Status;
 import com.s8.core.arch.silicon.SiliconChainCallback;
 import com.s8.core.arch.silicon.async.MthProfile;
 import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
