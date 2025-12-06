@@ -207,7 +207,7 @@ public class SpaceMgStore {
 
 	public List<H3MgHandler<?>> getSpaceHandlers() {
 		List<H3MgHandler<?>> unmountables = new ArrayList<>();
-		spaceHandlers.forEach((k, repo) -> unmountables.add(repo));
+		spaceHandlers.forEach((_, repo) -> unmountables.add(repo));
 		return unmountables;
 	}
 
