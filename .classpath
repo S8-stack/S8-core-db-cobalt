@@ -16,7 +16,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/S8-api">
+	<classpathentry combineaccessrules="false" kind="src" path="/S8-meta-API">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -46,7 +46,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/S8-meta">
+	<classpathentry kind="src" path="/S8-meta-env">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

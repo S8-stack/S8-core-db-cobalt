@@ -1,6 +1,6 @@
 package com.s8.core.db.cobalt;
 
-import com.s8.meta.modular.S8Module;
+import com.s8.meta.env.modular.S8Module;
 
 /**
  * 
