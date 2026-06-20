@@ -6,6 +6,7 @@ import com.s8.core.arch.silicon.async.MthProfile;
 import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
 import com.s8.core.arch.titanium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.core.arch.titanium.handlers.h3.H3MgHandler;
+import com.s8.meta.api.flow.S8FlowException;
 import com.s8.meta.api.flow.S8User;
 import com.s8.meta.api.flow.space.AccessSpaceS8Request;
 import com.s8.meta.api.flow.space.AccessSpaceS8Request.Status;
@@ -30,8 +31,8 @@ class AccessSpaceOp extends RequestDbMgOperation<LiBranch> {
 	 * 
 	 */
 	public final AccessSpaceS8Request request;
-	
-	
+
+
 
 
 
@@ -66,26 +67,37 @@ class AccessSpaceOp extends RequestDbMgOperation<LiBranch> {
 
 			@Override
 			public boolean consumeResource(LiBranch branch) {
-				SpaceS8Object[] objects = branch.getCurrentExposure();
-				
-				request.onAccessed(Status.OK, objects);
-				
-				boolean hasBeenModified = branch.getGraph().hasUnpublishedChanges();
+				boolean hasBeenModified = false;
 
-				if(hasBeenModified && request.writeChangesImmediatelyAfter) {
-					handler.save();
+				try {
+
+					SpaceS8Object[] objects = branch.getCurrentExposure();
+
+					request.onAccessed(Status.OK, objects);
+
+					hasBeenModified = branch.getGraph().hasUnpublishedChanges();
+
+					if(hasBeenModified && request.writeChangesImmediatelyAfter) {
+						handler.save();
+					}
+
+					callback.onSucceed();
 				}
-				
-				callback.call();
+				catch(S8FlowException e) { callback.onFailed(e); }
 
 				return hasBeenModified;
+
+
 			}
 
 
 			@Override
 			public void catchException(Exception exception) {
-				request.onFailed(exception);
-				callback.call();
+				try {
+					request.onFailed(exception);
+					callback.onSucceed();
+				}
+				catch(S8FlowException e) { callback.onFailed(e); }
 			}
 		};
 	}

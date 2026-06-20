@@ -6,6 +6,7 @@ import com.s8.core.arch.silicon.async.MthProfile;
 import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
 import com.s8.core.arch.titanium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.meta.api.exceptions.S8IOException;
+import com.s8.meta.api.flow.S8FlowException;
 import com.s8.meta.api.flow.S8User;
 import com.s8.meta.api.flow.space.ExposeSpaceS8Request;
 import com.s8.meta.api.flow.space.ExposeSpaceS8Request.Status;
@@ -27,8 +28,8 @@ class ExposeObjectsOp extends RequestDbMgOperation<LiBranch> {
 
 
 	public final ExposeSpaceS8Request request;
-	
-	
+
+
 
 
 
@@ -45,7 +46,7 @@ class ExposeObjectsOp extends RequestDbMgOperation<LiBranch> {
 		this.spaceHandler = spaceHandler;
 		this.request = request;
 	}
-	
+
 
 	@Override
 	public MgSpaceHandler getHandler() {
@@ -78,21 +79,31 @@ class ExposeObjectsOp extends RequestDbMgOperation<LiBranch> {
 					}	
 				}
 
-				request.onResponse(Status.OK, 0x0L);// TODO version
-				
-				if(request.saveImmediatelyAfter) {
-					handler.save();
+				try {
+					request.onResponse(Status.OK, 0x0L);// TODO version
+
+					if(request.saveImmediatelyAfter) {
+						handler.save();
+					}
+
+					callback.onSucceed();	
+				} 
+				catch(S8FlowException e) {
+					callback.onFailed(e);
 				}
-				
-				callback.call();
-				
+
 				return true;
 			}
 
 			@Override
 			public void catchException(Exception exception) {
-				request.onFailed(exception);
-				callback.call();
+				try {
+					request.onFailed(exception);
+					callback.onSucceed();
+				} 
+				catch(S8FlowException e) {
+					callback.onFailed(e);
+				}
 			}
 		};
 	}

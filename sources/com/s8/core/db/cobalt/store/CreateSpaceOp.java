@@ -8,6 +8,7 @@ import com.s8.core.arch.silicon.async.MthProfile;
 import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
 import com.s8.core.arch.titanium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.core.db.cobalt.entry.MgSpaceHandler;
+import com.s8.meta.api.flow.S8FlowException;
 import com.s8.meta.api.flow.S8User;
 import com.s8.meta.api.flow.space.CreateSpaceS8Request;
 import com.s8.meta.api.flow.space.CreateSpaceS8Request.Status;
@@ -32,8 +33,8 @@ class CreateSpaceOp extends RequestDbMgOperation<SpaceMgStore> {
 	 * 
 	 */
 	public final CreateSpaceS8Request request;
-	
-	
+
+
 
 
 
@@ -49,8 +50,8 @@ class CreateSpaceOp extends RequestDbMgOperation<SpaceMgStore> {
 		this.spaceHandler = handler;
 		this.request = request;
 	}
-	
-	
+
+
 
 	@Override
 	public SpaceMgDatabase getHandler() {
@@ -82,35 +83,47 @@ class CreateSpaceOp extends RequestDbMgOperation<SpaceMgStore> {
 
 					LiBranch branch = new LiBranch(request.spaceId, store.getCodebase());
 					branch.expose(request.exposure);
-					
+
 					spaceHandler.initializeResource(branch);
-					
-					request.onProcessed(Status.OK, 0x0L);
-					
-					/* before returning, notify next multi-db request can be launched */
-					callback.call();
-					
+					try {
+						request.onProcessed(Status.OK, 0x0L);
+
+						/* before returning, notify next multi-db request can be launched */
+						callback.onSucceed();
+					} catch(S8FlowException e) {
+						callback.onFailed(e);
+					}
+
 					return true;
 				}
 				else {
+					try {
+						/* exit point 2 -> soft fail */
+						request.onProcessed(Status.SPACE_ID_CONFLICT, 0x0L);
 
-					/* exit point 2 -> soft fail */
-					request.onProcessed(Status.SPACE_ID_CONFLICT, 0x0L);
-					
-					/* before returning, notify next multi-db request can be launched */
-					callback.call();
-					
+						/* before returning, notify next multi-db request can be launched */
+						callback.onSucceed();
+
+					} catch(S8FlowException e) {
+						callback.onFailed(e);
+					}
+
 					return false;
-					
+
 				}
 			}
 
 			@Override
 			public void catchException(Exception exception) {
-				request.onFailed(exception);
-				
-				/* before returning, notify next multi-db request can be launched */
-				callback.call();
+				try {
+					request.onFailed(exception);
+
+					/* before returning, notify next multi-db request can be launched */
+					callback.onSucceed();
+
+				} catch(S8FlowException e) {
+					callback.onFailed(e);
+				}
 			}
 		};
 	}

@@ -7,6 +7,7 @@ import com.s8.core.arch.silicon.async.MthProfile;
 import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
 import com.s8.core.arch.titanium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.core.db.cobalt.entry.MgSpaceHandler;
+import com.s8.meta.api.flow.S8FlowException;
 import com.s8.meta.api.flow.S8User;
 import com.s8.meta.api.flow.space.AccessSpaceS8Request;
 import com.s8.meta.api.flow.space.AccessSpaceS8Request.Status;
@@ -26,13 +27,13 @@ class AccessSpaceOp extends RequestDbMgOperation<SpaceMgStore> {
 	 */
 	public final SpaceMgDatabase spaceHandler;
 
-	
+
 
 	/**
 	 * space-id
 	 */
 	public final AccessSpaceS8Request request;
-	
+
 
 	/**
 	 * 
@@ -47,12 +48,12 @@ class AccessSpaceOp extends RequestDbMgOperation<SpaceMgStore> {
 		this.request = request;
 	}
 
-	
+
 	@Override
 	public SpaceMgDatabase getHandler() {
 		return spaceHandler;
 	}
-	
+
 
 	@Override
 	public ConsumeResourceMgAsyncTask<SpaceMgStore> createAsyncTask() {
@@ -81,18 +82,26 @@ class AccessSpaceOp extends RequestDbMgOperation<SpaceMgStore> {
 				}
 				else {
 					/* exit point 2 -> soft fail */
-					request.onAccessed(Status.SPACE_DOES_NOT_EXIST, null);
-					callback.call();
+					try {
+						request.onAccessed(Status.SPACE_DOES_NOT_EXIST, null);
+						callback.onSucceed();
+					} catch(S8FlowException e) {
+						callback.onFailed(e);
+					}
 				}
-				
+
 				/* no new space created */
 				return false;
 			}
 
 			@Override
 			public void catchException(Exception exception) {
-				request.onFailed(exception);
-				callback.call();
+				try {
+					request.onFailed(exception);
+					callback.onSucceed();
+				} catch(S8FlowException e) {
+					callback.onFailed(e);
+				}
 			}
 		};
 	}
