@@ -1,15 +1,16 @@
 package com.s8.core.db.cobalt.entry;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.s8.bohr.io.lithium.branches.LiBranch;
-import com.s8.core.arch.silicon.SiliconChainCallback;
 import com.s8.core.arch.silicon.async.MthProfile;
 import com.s8.core.arch.titanium.databases.RequestDbMgOperation;
 import com.s8.core.arch.titanium.handlers.h3.ConsumeResourceMgAsyncTask;
 import com.s8.core.arch.titanium.handlers.h3.H3MgHandler;
-import com.s8.meta.api.flow.S8FlowException;
 import com.s8.meta.api.flow.S8User;
 import com.s8.meta.api.flow.space.AccessSpaceS8Request;
-import com.s8.meta.api.flow.space.AccessSpaceS8Request.Status;
+import com.s8.meta.api.flow.space.AccessSpaceS8Response;
+import com.s8.meta.api.flow.space.AccessSpaceS8Response.Status;
 import com.s8.meta.api.flow.space.objects.SpaceS8Object;
 
 /**
@@ -34,6 +35,10 @@ class AccessSpaceOp extends RequestDbMgOperation<LiBranch> {
 
 
 
+	public final CompletableFuture<AccessSpaceS8Response> future;
+
+
+
 
 
 	/**
@@ -42,11 +47,12 @@ class AccessSpaceOp extends RequestDbMgOperation<LiBranch> {
 	 * @param onSucceed
 	 * @param onFailed
 	 */
-	public AccessSpaceOp(long timestamp, S8User initiator, SiliconChainCallback callback,
-			MgSpaceHandler spaceHandler, AccessSpaceS8Request request) {
-		super(timestamp, initiator, callback);
+	public AccessSpaceOp(long timestamp, S8User initiator, MgSpaceHandler spaceHandler, AccessSpaceS8Request request, 
+			CompletableFuture<AccessSpaceS8Response> future) {
+		super(timestamp, initiator);
 		this.spaceHandler = spaceHandler;
 		this.request = request;
+		this.future = future;
 	}
 
 
@@ -69,21 +75,18 @@ class AccessSpaceOp extends RequestDbMgOperation<LiBranch> {
 			public boolean consumeResource(LiBranch branch) {
 				boolean hasBeenModified = false;
 
-				try {
 
-					SpaceS8Object[] objects = branch.getCurrentExposure();
+				SpaceS8Object[] objects = branch.getCurrentExposure();
 
-					request.onAccessed(Status.OK, objects);
 
-					hasBeenModified = branch.getGraph().hasUnpublishedChanges();
+				future.complete(new AccessSpaceS8Response(Status.OK, objects));
 
-					if(hasBeenModified && request.writeChangesImmediatelyAfter) {
-						handler.save();
-					}
+				hasBeenModified = branch.getGraph().hasUnpublishedChanges();
 
-					callback.onSucceed();
+				if(hasBeenModified && request.writeChangesImmediatelyAfter) {
+					handler.save();
 				}
-				catch(S8FlowException e) { callback.onFailed(e); }
+
 
 				return hasBeenModified;
 
@@ -93,11 +96,7 @@ class AccessSpaceOp extends RequestDbMgOperation<LiBranch> {
 
 			@Override
 			public void catchException(Exception exception) {
-				try {
-					request.onFailed(exception);
-					callback.onSucceed();
-				}
-				catch(S8FlowException e) { callback.onFailed(e); }
+				future.complete(new AccessSpaceS8Response(Status.INTERNAL_ERROR, null));
 			}
 		};
 	}

@@ -3,16 +3,18 @@ package com.s8.core.db.cobalt.entry;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.s8.bohr.io.lithium.branches.LiBranch;
-import com.s8.core.arch.silicon.SiliconChainCallback;
 import com.s8.core.arch.silicon.SiliconEngine;
 import com.s8.core.arch.titanium.handlers.h3.H3MgHandler;
 import com.s8.core.arch.titanium.handlers.h3.H3MgIOModule;
 import com.s8.core.db.cobalt.store.SpaceMgStore;
 import com.s8.meta.api.flow.S8User;
 import com.s8.meta.api.flow.space.AccessSpaceS8Request;
+import com.s8.meta.api.flow.space.AccessSpaceS8Response;
 import com.s8.meta.api.flow.space.ExposeSpaceS8Request;
+import com.s8.meta.api.flow.space.ExposeSpaceS8Response;
 
 
 /**
@@ -117,8 +119,8 @@ public class MgSpaceHandler extends H3MgHandler<LiBranch> {
 	 * @param onSucceed
 	 * @param onFailed
 	 */
-	public void accessSpace(long t, S8User initiator, SiliconChainCallback callback, AccessSpaceS8Request request) {
-		pushOpLast(new AccessSpaceOp(t, initiator, callback, this, request));
+	public void accessSpace(long t, S8User initiator, AccessSpaceS8Request request, CompletableFuture<AccessSpaceS8Response> future) {
+		pushOpLast(new AccessSpaceOp(t, initiator, this, request, future));
 	}
 	
 	
@@ -128,8 +130,8 @@ public class MgSpaceHandler extends H3MgHandler<LiBranch> {
 	 * @param onSucceed
 	 * @param onFailed
 	 */
-	public void exposeObjects(long t, S8User initiator, SiliconChainCallback callback, ExposeSpaceS8Request request) {
-		pushOpLast(new ExposeObjectsOp(t, initiator, callback, this, request));
+	public void exposeObjects(long t, S8User initiator, ExposeSpaceS8Request request, CompletableFuture<ExposeSpaceS8Response> future) {
+		pushOpLast(new ExposeObjectsOp(t, initiator, this, request, future));
 	}
 
 
